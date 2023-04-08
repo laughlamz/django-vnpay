@@ -29,8 +29,8 @@ path('vnpay/', include('vnpay.api_urls')),
 
 4. Run ``python manage.py migrate`` to create related models
 
-5. Start the development server and visit http://0.0.7.1:8000/
+5. Start the development server and visit http://127.0.0.1:8000/
 ```
-http://0.0.7.1:8000/admin/ to see the Billing
-http://0.0.7.1:8000/vnpay/ to see the urls
+http://127.0.0.1:8000/admin/ to see the Billing
+http://127.0.0.1:8000/vnpay/ to see the urls
 ```
