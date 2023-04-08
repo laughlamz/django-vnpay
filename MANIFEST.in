@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+recursive-include vnpay/templates *
+recursive-include docs *

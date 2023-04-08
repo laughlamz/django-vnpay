@@ -1,0 +1,38 @@
+{% extends "vnpay/base_layout.html" %}
+{% block content %}
+    <div class="panel panel-default">
+        <div style="display:flex;text-align: start;padding: 15px" class="panel-heading">
+                <div style="flex: 50%;"> {{ title }}:</div>
+                <div style="flex: 50%;"><strong>{{ result }}!</strong></div>
+        </div>
+        <div class="panel-body">
+            <div style="display:flex;">
+                <div style="flex: 50%;"> <p>Order ID:</p></div>
+                <div style="flex: 50%;"><strong>{{ order_id }}</strong></div>
+            </div>
+            <div style="display:flex;">
+                <div style="flex: 50%;"><p>Amount:</p></div>
+                <div style="flex: 50%;">{{ amount }}</div>
+            </div>
+            <div style="display:flex;">
+                <div style="flex: 50%;"><p>Order description:</p></div>
+                <div style="flex: 50%;">{{ order_desc }}</div>
+            </div>
+            <div style="display:flex;">
+                <div style="flex: 50%;"><p>VNP Transaction:</p></div>
+                <div style="flex: 50%;">{{ vnp_TransactionNo }}</div>
+            </div>
+            <div style="display:flex;">
+            <div style="flex: 50%;"><p>VNP Response Code:</p></div>
+            {% if vnp_ResponseCode == '00' %}
+                <div style="flex: 50%;">{{ vnp_ResponseCode }} - Thành công</div>
+            {% else %}
+                <div style="flex: 50%;">{{ vnp_ResponseCode }} - Không thành công</div>
+            {% endif %}
+        </div>
+            {% if msg %}
+                <p style="margin-top:15px;" class="alert-warning"> {{ msg }}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
