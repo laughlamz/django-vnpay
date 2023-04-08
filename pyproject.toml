@@ -23,7 +23,25 @@ keywords = ["django", "vnpay"]
 requires-python = ">=3.10"
 
 [project.optional-dependencies]
-dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
+dev = ["bumpver", "poetry", "pip-tools", "pytest"]
 
 [project.urls]
 Homepage = "https://github.com/laughlamz/django-vnpay"
+
+
+[tool.bumpver]
+current_version = "0.0.6"
+version_pattern = "MAJOR.MINOR.PATCH"
+commit_message = "bump version {old_version} -> {new_version}"
+commit = true
+tag = true
+push = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml" = [
+    'version = "{version}"',
+]
+"README.md" = [
+    "{version}",
+]
+

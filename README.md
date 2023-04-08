@@ -1,6 +1,7 @@
 Django-vnpay
 =====
 A quick package for integrating Vnpay payment gateway.
+`Version 1.0.0`
 
 Quick start
 -----------
