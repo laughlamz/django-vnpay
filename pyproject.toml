@@ -5,7 +5,7 @@ build-backend = 'setuptools.build_meta:__legacy__'
 [project]
 name = "django-vnpay"
 version = "0.0.6"
-description = "A quick package for integrate vnpay payment"
+description = "A quick package for integrating Vnpay payment gateway."
 readme = "README.md"
 authors = [{ name = "Son Lam", email = "son.lg@eoh.io" }]
 license = { file = "LICENSE" }
@@ -21,6 +21,9 @@ dependencies = [
 ]
 keywords = ["django", "vnpay"]
 requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["black", "bumpver", "isort", "pip-tools", "pytest"]
 
 [project.urls]
 Homepage = "https://github.com/laughlamz/django-vnpay"

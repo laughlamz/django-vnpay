@@ -41,4 +41,4 @@ class VnPayPaymentReturnApi(APIView):
             context['result'] = 'Không thành công'
             context['msg'] = 'Sai checksum'
 
-        return render(request, 'vnpay/payment_return.html', context)  # TODO make templates work
+        return render(request, 'vnpay/payment_return.html', context)

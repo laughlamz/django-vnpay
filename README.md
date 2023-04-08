@@ -1,28 +1,35 @@
-=====
 Django-vnpay
 =====
-
-This is a package that help to make payment for vnpay.
-
-Detailed documentation is in the "docs" directory.
+A quick package for integrating Vnpay payment gateway.
 
 Quick start
 -----------
 
-1. Add "VnPay" to your INSTALLED_APPS setting like this::
+1. Add "vnpay" to INSTALLED_APPS in `setting.py`
+```
+INSTALLED_APPS = [
+    ...
+    'vnpay',
+]
+```
+2. Add env variable in `settings.py`
+```
+VNPAY_TMN_CODE = env('VNPAY_TMN_CODE')
+VNPAY_HASH_SECRET_KEY = env('VNPAY_HASH_SECRET_KEY')
+VNPAY_PAYMENT_URL = env('VNPAY_PAYMENT_URL')
+VNPAY_RETURN_URL = env('VNPAY_RETURN_URL')
+```
 
-    INSTALLED_APPS = [
-        ...
-        'vnpay',
-    ]
+3. Include the vnpay URLconf in your project urls.py
 
-2. Include the VnPay URLconf in your project urls.py like this::
+```
+path('vnpay/', include('vnpay.api_urls')),
+```
 
-    path('vnpay/', include('vnpay.api_urls')),
+4. Run ``python manage.py migrate`` to create related models
 
-3. Run ``python manage.py migrate`` to create the VnPay models.
-
-4. Start the development server and visit http://127.0.0.1:8000/admin/
-   to see the billing (you'll need the Admin app enabled).
-
-5. Visit http://127.0.0.1:8000/vnpay/ to participate in the vnpay.
+5. Start the development server and visit http://127.0.0.1:8000/
+```
+http://127.0.0.1:8000/admin/ to see the Billing
+http://127.0.0.1:8000/vnpay/ to see the urls
+```
