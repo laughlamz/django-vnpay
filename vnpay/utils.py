@@ -3,8 +3,6 @@ import hmac
 from urllib.parse import quote_plus
 
 from django.conf import settings
-from django.utils import timezone
-from ipware import get_client_ip
 from rest_framework import serializers
 
 

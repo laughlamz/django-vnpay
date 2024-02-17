@@ -15,9 +15,9 @@ def get_vn_datetime(input_datetime):
 
 
 class BillingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'pay_by', 'reference_number', 'amount', 'status', 'pay_at_vn', 'created_at_vn',)
-    search_fields = ('id', 'pay_by__username',)
-    readonly_fields = ('pay_at_vn', 'created_at_vn',)
+    list_display = ('id', 'pay_by', 'reference_number', 'amount', 'status', 'pay_at_vn', 'created_at_vn')
+    search_fields = ('id', 'pay_by__username')
+    readonly_fields = ('pay_at_vn', 'created_at_vn')
 
     def pay_at_vn(self, obj):
         return get_vn_datetime(obj.pay_at)

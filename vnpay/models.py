@@ -45,9 +45,6 @@ class Billing(models.Model):
     is_paid = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=255, null=True, blank=True)
 
-    # class Meta:
-    #     app_label = 'vnpay'
-
     def set_paid(self):
         self.result_payment = 'succeeded'
         self.result_payment = 'VNPAY_00'
