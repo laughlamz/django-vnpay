@@ -4,7 +4,7 @@ build-backend = 'setuptools.build_meta:__legacy__'
 
 [project]
 name = "django-vnpay"
-version = "0.0.9"
+version = "0.0.11"
 description = "A quick package for integrating Vnpay payment gateway."
 readme = "README.md"
 authors = [{ name = "Son Lam", email = "son.lg@eoh.io" }]
@@ -30,7 +30,7 @@ Homepage = "https://github.com/laughlamz/django-vnpay"
 
 
 [tool.bumpver]
-current_version = "0.0.9"
+current_version = "0.0.11"
 version_pattern = "MAJOR.MINOR.PATCH"
 commit_message = "bump version {old_version} -> {new_version}"
 commit = true
