@@ -8,6 +8,13 @@ jobs:
     container: laughlamz/docker-python-kubectl
     steps:
       - uses: actions/checkout@v3
+      - name: Install git
+        run: |
+          apt update
+          apt install -y git
+          git config --global user.name "Son Lam"
+          git config --global user.email laughlamz@gmail.com
+          git config --global --add safe.directory /__w/django-vnpay/django-vnpay
       - name: Bump version
         id: bump
         run: |
