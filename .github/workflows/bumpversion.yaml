@@ -1,4 +1,4 @@
-name: Bump version
+name: Trigger bump version
 
 on: [ workflow_dispatch ]
 
@@ -33,5 +33,5 @@ jobs:
           token: '${{ secrets.AUTORELEASE_TOKEN }}'
           branch: chore/bump-version-${{ steps.bump.outputs.current-version }}
           base: main
-          title: Bump version ${{ steps.bump.outputs.current-version }}
-          commit-message: Bump version ${{ steps.bump.outputs.current-version }}
+          title: Chore bump version ${{ steps.bump.outputs.current-version }}
+          commit-message: bump version ${{ steps.bump.outputs.current-version }}

@@ -1,4 +1,4 @@
-name: PR Release
+name: Release
 
 on:
   pull_request:
