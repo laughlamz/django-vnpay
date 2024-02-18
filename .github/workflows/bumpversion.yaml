@@ -11,6 +11,7 @@ jobs:
       - name: Bump version
         id: bump
         run: |
+          pip install bumpver
           bumpver update --patch --no-commit
           eval $(bumpver show -n --env)
           echo $CURRENT_VERSION
