@@ -1,0 +1,23 @@
+name: PR
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: pr-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  test-all:
+    runs-on: ubuntu-latest
+    container: laughlamz/docker-python-kubectl
+    steps:
+      - uses: actions/checkout@v3
+      - name: build setup python
+        run: |
+          pip install twine
+          echo "[pypi]\n  username = __token__\n  password = ${{ secrets.PYPI_TOKEN_DJANGO_VNPAY }}" > ~/.pypirc
+          python setup.py sdist bdist_wheel
+          twine upload dist/*
