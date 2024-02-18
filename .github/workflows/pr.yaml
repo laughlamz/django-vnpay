@@ -19,5 +19,7 @@ jobs:
         run: |
           pip install twine
           echo "[pypi]\n  username = __token__\n  password = ${{ secrets.PYPI_TOKEN_DJANGO_VNPAY }}" > .pypirc
+          ls
+          cat .pypirc
           python setup.py sdist bdist_wheel
           twine upload dist/*
