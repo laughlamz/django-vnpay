@@ -33,5 +33,5 @@ jobs:
           token: '${{ secrets.AUTORELEASE_TOKEN }}'
           branch: chore/bump-version-${{ steps.bump.outputs.current-version }}
           base: main
-          title: Chore bump version ${{ steps.bump.outputs.current-version }}
+          title: Bump version ${{ steps.bump.outputs.current-version }}
           commit-message: bump version ${{ steps.bump.outputs.current-version }}
