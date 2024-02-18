@@ -34,3 +34,15 @@ path('vnpay/', include('vnpay.api_urls')),
 http://127.0.0.1:8000/admin/ to see the Billing
 http://127.0.0.1:8000/vnpay/ to see the urls
 ```
+
+Usage
+-----------
+1. Call api `payment_url`
+- It will create billing
+- It will return url to pay
+2. User pay with payment_url
+3. Vnpay will return result to
+- api `payment_ipn`
+- api `payment_return`
+
+Note: Give the api `payment_ipn` and `payment_return` to VNPAY support.

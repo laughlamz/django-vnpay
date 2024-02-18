@@ -17,6 +17,39 @@ class BaseUserTest(APITestCase):
         self.client.force_authenticate(self.user)
 
 
+class BaseBilling(BaseUserTest):
+    def setUp(self):
+        super().setUp()
+        self.billing = Billing.objects.create(
+            pay_by=self.user,
+            status='NEW',
+            amount=100000,
+            reference_number='00001111',
+        )
+
+    def _get_query_string(self, vnp_Amount=10000000, vnp_ResponseCode='00', vnp_TxnRef='00001111'):  # default success
+        return f'vnp_Amount={vnp_Amount}' \
+               '&vnp_BankCode=NCB' \
+               '&vnp_BankTranNo=VNP12345678' \
+               '&vnp_CardType=ATM' \
+               f'&vnp_OrderInfo=Thanh+toan+vnpay+hoa+don+{vnp_TxnRef}' \
+               '&vnp_PayDate=20230328175935' \
+               f'&vnp_ResponseCode={vnp_ResponseCode}' \
+               '&vnp_TmnCode=EOH00000' \
+               '&vnp_TransactionNo=12345678' \
+               '&vnp_TransactionStatus=00' \
+               f'&vnp_TxnRef={vnp_TxnRef}'
+
+    def _call_api(self, query_string, has_secure_type=False):
+        hash_result = hmacsha512(settings.VNPAY_HASH_SECRET_KEY, query_string)
+        url = f'{self.url}?{query_string}&vnp_SecureHash={hash_result}'
+
+        if has_secure_type:
+            url += '&vnp_SecureHashType=SHA256'
+
+        return self.client.get(url)
+
+
 class VnPayPaymentUrlApiTest(BaseUserTest):
     def test_payment_url(self):
         url = reverse('payment-url')
@@ -41,34 +74,8 @@ class VnPayPaymentUrlApiTest(BaseUserTest):
         self.assertTrue(billing.id)
 
 
-class VnPayPaymentIpnApiTests(BaseUserTest):
+class VnPayPaymentIpnApiTests(BaseBilling):
     url = reverse('payment-ipn')
-
-    def setUp(self):
-        super().setUp()
-        self.billing = Billing.objects.create(
-            pay_by=self.user,
-            amount=100000,
-            reference_number='00001111',
-            status='NEW',
-        )  # query_string default on this billing
-
-    def _get_query_string(self, vnp_Amount=10000000, vnp_ResponseCode='00', vnp_TxnRef='00001111'):  # default success
-        return f'vnp_Amount={vnp_Amount}' \
-               '&vnp_BankCode=NCB' \
-               '&vnp_BankTranNo=VNP12345678' \
-               '&vnp_CardType=ATM' \
-               f'&vnp_OrderInfo=Thanh+toan+vnpay+hoa+don+{vnp_TxnRef}' \
-               '&vnp_PayDate=20230328175935' \
-               f'&vnp_ResponseCode={vnp_ResponseCode}' \
-               '&vnp_TmnCode=EOH00000' \
-               '&vnp_TransactionNo=12345678' \
-               '&vnp_TransactionStatus=00' \
-               f'&vnp_TxnRef={vnp_TxnRef}'
-
-    def _call_api(self, query_string):
-        hash_result = hmacsha512(settings.VNPAY_HASH_SECRET_KEY, query_string)
-        return self.client.get(f'{self.url}?{query_string}&vnp_SecureHash={hash_result}')
 
     def _assert_response_success(self, response, assert_response):
         self.assertEqual(response.status_code, 200)
@@ -120,40 +127,8 @@ class VnPayPaymentIpnApiTests(BaseUserTest):
         self._assert_response_success(response, {'RspCode': '04', 'Message': 'Invalid Amount'})
 
 
-class VnPayPaymentReturnApiTests(BaseUserTest):
+class VnPayPaymentReturnApiTests(BaseBilling):
     url = reverse('payment-return')
-
-    def setUp(self) -> None:
-        super().setUp()
-        self.billing = Billing.objects.create(
-            status='NEW',
-            amount=100000,
-            currency='VND',
-            pay_by=self.user,
-            reference_number='00001111',
-        )
-
-    def _get_query_string(self, vnp_Amount=10000000, vnp_ResponseCode='00', vnp_TxnRef='00001111'):  # default success
-        return f'vnp_Amount={vnp_Amount}' \
-               '&vnp_BankCode=NCB' \
-               '&vnp_BankTranNo=VNP12345678' \
-               '&vnp_CardType=ATM' \
-               f'&vnp_OrderInfo=Thanh+toan+vnpay+hoa+don+{vnp_TxnRef}' \
-               '&vnp_PayDate=20230328175935' \
-               f'&vnp_ResponseCode={vnp_ResponseCode}' \
-               '&vnp_TmnCode=EOH00000' \
-               '&vnp_TransactionNo=12345678' \
-               '&vnp_TransactionStatus=00' \
-               f'&vnp_TxnRef={vnp_TxnRef}'
-
-    def _call_api(self, query_string, has_secure_type=False):
-        hash_result = hmacsha512(settings.VNPAY_HASH_SECRET_KEY, query_string)
-        url = f'{self.url}?{query_string}&vnp_SecureHash={hash_result}'
-
-        if has_secure_type:
-            url += '&vnp_SecureHashType=SHA256'
-
-        return self.client.get(url)
 
     def test_vnpay_payment_return_view_get(self):
         response = self.client.get(self.url)
@@ -175,7 +150,7 @@ class VnPayPaymentReturnApiTests(BaseUserTest):
         query_string = self._get_query_string(vnp_ResponseCode='99')
         response = self._call_api(query_string)
         self.assertEqual(response.status_code, 200)
-        self.assertIn('- Không thành công'.encode(), response.content)
+        self.assertIn('Không thành công'.encode(), response.content)
 
     def test_vnpay_payment_return_wrong_checksum(self):
         query_string = self._get_query_string(vnp_ResponseCode='00')
