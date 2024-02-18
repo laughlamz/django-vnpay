@@ -8,14 +8,18 @@ jobs:
     container: laughlamz/docker-python-kubectl
     steps:
       - uses: actions/checkout@v3
-      - name: bump
-        run: bumpver update --patch
+      - name: Bump version
+        id: bump
+        run: |
+          bumpver update --patch --no-commit
+          eval $(bumpver show -n --env)
+          echo $CURRENT_VERSION
+          echo "current-version=$$CURRENT_VERSION" >> $GITHUB_OUTPUT
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
-        id: cpr
         with:
           token: '${{ secrets.AUTORELEASE_TOKEN }}'
-          branch: chore/bump-version-${{ steps.date.outputs.date }}
+          branch: chore/bump-version-${{ steps.bump.outputs.current-version }}
           base: main
-          title: Bump version ${{ steps.date.outputs.date }}
-          commit-message: Bump version ${{ steps.date.outputs.date }}
+          title: Bump version ${{ steps.bump.outputs.current-version }}
+          commit-message: Bump version ${{ steps.bump.outputs.current-version }}
