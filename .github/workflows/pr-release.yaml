@@ -1,16 +1,12 @@
-name: PR
+name: PR Release
 
 on:
   pull_request:
     branches:
       - main
 
-concurrency:
-  group: pr-${{ github.head_ref }}
-  cancel-in-progress: true
-
 jobs:
-  test-all:
+  release:
     runs-on: ubuntu-latest
     container: laughlamz/docker-python-kubectl
     steps:
