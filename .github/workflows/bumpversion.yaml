@@ -15,7 +15,7 @@ jobs:
           bumpver update --patch --no-commit
           eval $(bumpver show -n --env)
           echo $CURRENT_VERSION
-          echo "current-version=$$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "current-version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
         with:
