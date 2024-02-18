@@ -18,6 +18,7 @@ jobs:
       - name: build setup python
         run: |
           pip install twine
+          pwd
           echo "[pypi]\n  username = __token__\n  password = ${{ secrets.PYPI_TOKEN_DJANGO_VNPAY }}" > .pypirc
           ls
           cat .pypirc
